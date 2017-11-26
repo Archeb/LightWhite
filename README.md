@@ -11,4 +11,4 @@
 
 很长的预览图（辣鸡Github自动缓存结果缓存不全 好气啊）
 
-![](https://o2hr9ra03.qnssl.com/17-11-26/12961128.jpg?v3)
+![](https://o2hr9ra03.qnssl.com/17-11-26/12961128.jpg?v4)
