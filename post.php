@@ -2,6 +2,11 @@
 if (!defined('__TYPECHO_ROOT_DIR__'))
 	exit ;
 
+if (isset($_GET['ajaxload'])){
+    $this->content('继续阅读');
+    $this->need('comments.php');
+    die();
+}
 
 $this -> need('header.php');
 ?>
@@ -21,9 +26,9 @@ $this -> need('header.php');
             <div class="font-control" onclick="biggerFont('tr-<?php echo $this->cid ?>')">
                 <span class="mdi mdi-format-annotation-plus"></span>
             </div>
-            <div class="go-comment">
+            <a href="#comments"><div class="go-comment">
                 <span class="mdi mdi-comment-outline"></span>
-            </div>
+            </div></a>
             <div class="go-share">
                 <span class="mdi mdi-share-variant"></span>
             </div>
@@ -41,10 +46,10 @@ $this -> need('header.php');
                             <?php $this->content('继续阅读'); ?>
             </div>
             <div class="article-comment">
-                <?php $this -> need('comments.php'); ?>
+                <?php $this->need('comments.php'); ?>
             </div>
         </div>
     </div>
     <?php endwhile; ?>
 </div>
-	<?php $this -> need('footer.php'); ?>
+	<?php $this->need('footer.php'); ?>

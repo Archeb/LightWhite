@@ -12,8 +12,7 @@
             'tag'       =>  _t('标签 %s 下的文章'),
             'author'    =>  _t('%s 发布的文章')
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
-	<link rel="stylesheet/less" href="<?php $this->options->themeUrl('css/w.less'); ?>">
-	<script src="<?php $this->options->themeUrl('js/less.min.js'); ?>" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="<?php $this->options->themeUrl('css/w.css'); ?>">
 	<script src="<?php $this->options->themeUrl('js/pjax.js'); ?>" type="text/javascript" charset="utf-8"></script>
 	<script src="<?php $this->options->themeUrl('js/o.js'); ?>" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -48,10 +47,10 @@
                 </div>
             </div>
             <div class="nav">
-                <a class="item" href="<?php $this->options->siteUrl(); ?>">主页</a>
+                <a pjax class="item" href="<?php $this->options->siteUrl(); ?>">主页</a>
                 <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
                 <?php while($pages->next()): ?>
-                <div class="dot">&nbsp;·&nbsp;</div><a class="item" href="<?php $pages->permalink(); ?>">
+                <div class="dot">&nbsp;·&nbsp;</div><a pjax class="item" href="<?php $pages->permalink(); ?>">
                     <?php $pages->title(); ?></a>
                 <?php endwhile; ?>
             </div>

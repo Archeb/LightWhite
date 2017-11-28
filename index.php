@@ -1,6 +1,7 @@
 <?php
 /**
  * LightWhite
+ * 使用前请到 设置-评论 中关闭[检查评论来源页URL]和[开启反垃圾保护]
  * 
  * @package LightWhite
  * @author Archeb @ iDea Leaper
@@ -23,7 +24,7 @@ $this -> need('header.php');
                 <div class="month"><?php echo substr($this->date->format('F'),0,3); ?></div>
             </div>
             <div class="article-mobile-title">
-                <a href="<?php $this->permalink() ?>">
+                <a pjax href="<?php $this->permalink() ?>">
             <?php $this->title(); ?></a>
             </div>
             <div class="font-control" onclick="biggerFont('tr-<?php echo $this->cid ?>')">
@@ -38,7 +39,7 @@ $this -> need('header.php');
         </div>
         <div class="article-main">
             <div class="article-title">
-                <a href="<?php $this->permalink() ?>">
+                <a pjax href="<?php $this->permalink() ?>">
             <?php $this->title(); ?></a>
                 <div class="article-meta">
                     <span class="mdi mdi-account-edit"></span> <?php $this->author(); ?>

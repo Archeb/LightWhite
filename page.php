@@ -21,9 +21,9 @@ $this -> need('header.php');
             <div class="font-control" onclick="biggerFont('tr-<?php echo $this->cid ?>')">
                 <span class="mdi mdi-format-annotation-plus"></span>
             </div>
-            <div class="go-comment">
+            <a href="#comments"><div class="go-comment">
                 <span class="mdi mdi-comment-outline"></span>
-            </div>
+            </div></a>
             <div class="go-share">
                 <span class="mdi mdi-share-variant"></span>
             </div>

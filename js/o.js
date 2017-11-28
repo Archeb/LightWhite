@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded',onPageLoad);
 document.addEventListener('DOMContentLoaded',function(){
-    pjax = new Pjax({ selectors: [".article-list"] });
+    pjax = new Pjax({ elements: "a[pjax]",selectors: [".article-list"] });
     
     document.addEventListener('pjax:success',onPageLoad);
     
@@ -15,6 +15,27 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 function onPageLoad(){
+    var readMoreLink=document.querySelectorAll('.more a');
+    [].forEach.call(readMoreLink, function(e){
+    　　e.addEventListener('click',function(e){
+    　　    e.preventDefault();
+    　　    var stxt=e.srcElement.parentNode.parentNode;
+    　　  e.srcElement.text="少女折寿中...";
+    　　    var req = new XMLHttpRequest();
+            req.open('GET',e.srcElement.href + "?ajaxload", true);
+            req.send();
+            req.onreadystatechange = function(){
+                if(req.readyState == 4){
+                    if(req.status == 200){
+                        stxt.innerHTML=req.responseText;
+                        onPageLoad(); 
+                    }else{
+                        
+                    }
+                }
+            }
+    　　})
+    });
     var sendCommentElement=document.querySelector('#submit-comment');
     if(sendCommentElement){
         sendCommentElement.addEventListener('click',function(){
@@ -32,7 +53,13 @@ function onPageLoad(){
                         if(req.responseText.indexOf("Error")!=-1){
                             document.querySelector('.warning_tip').style.height="auto";
                             document.querySelector('.warning_tip').style.opacity="1";
+                            document.querySelector('.warning_tip').style.backgroundColor="#bb0909";
+                            document.querySelector('.warning_tip').innerHTML="发送失败 可能是您的发言太频繁或联系方式有误";
                         }else{
+                            document.querySelector('.warning_tip').style.height="auto";
+                            document.querySelector('.warning_tip').style.opacity="1";
+                            document.querySelector('.warning_tip').style.backgroundColor="green";
+                            document.querySelector('.warning_tip').innerHTML="发送成功";
                             var e = document.createElement('li');
                             e.innerHTML = '<div class="comment-element" id="comment-TMP"><div class="comment-container"><div class="comment-author-avatar"><a href="' + data.get('url') + '"><img class="avatar" src="https://gravatar.cat.net/avatar/' + data.get('mail').MD5(32) + '?s=55&amp;r=G&amp;d=" alt="' + data.get('author') + '" width="55" height="55"></a></div><div class="comment-author-info"><div class="comment-meta"><span class="comment-author-name"><a href="' + data.get('url') + '" rel="external nofollow">' + data.get('author') + '</a></span><a class="comment-time" href="#">' + new Date().toLocaleDateString() + '</a></div><div class="comment-content"><p>' + data.get('text') + '</p></div></div></div></div>';
                             e.className="comment-body comment-parent comment-odd";
@@ -51,6 +78,10 @@ function biggerFont(targetid){
     var target=document.querySelector('#' + targetid);
     target.style.fontSize= (target.style.fontSize=='') ? '15px' : target.style.fontSize;
     target.style.fontSize=(parseInt(target.style.fontSize)+1) + "px"; 
+}
+
+function loadArticle(){
+    
 }
 
 String.prototype.MD5 = function (bit)
