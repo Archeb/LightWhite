@@ -1,11 +1,66 @@
+var navOffsetTop;
+
+setInterval(function() {
+    var date3= new Date((new Date().getTime()) - 1419043380000);
+    var days=Math.floor(date3/(24*3600*1000))
+    var leave1=date3%(24*3600*1000)
+    var hours=Math.floor(leave1/(3600*1000))
+    var leave2=leave1%(3600*1000)
+    var minutes=Math.floor(leave2/(60*1000))
+    var leave3=leave2%(60*1000)
+    var seconds=Math.round(leave3/1000)
+    document.querySelector("#run-time").innerHTML=(days+"天"+hours+"小时"+minutes+"分钟"+seconds+"秒")
+} , 1000);
 
 document.addEventListener('DOMContentLoaded',onPageLoad);
 document.addEventListener('DOMContentLoaded',function(){
-    pjax = new Pjax({ elements: "a[pjax]",selectors: [".article-list"] });
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?136ddc5fd444ca501e348fd4f3c3dae8";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
     
+    pjax = new Pjax({ elements:["a[pjax]",".page-navigator a"],selectors: [".article-list"] });
+    
+    /* var ap = new APlayer({
+    element: document.getElementById('aplayer'),
+    narrow: false,
+    autoplay: false,
+    showlrc: 0,
+    mutex: true,
+    theme: '#FFFFFF',
+    mode: 'order',
+    preload: 'metadata',
+    listmaxheight: '513px',
+    music: [
+            {
+                title: '回レ！雪月花',
+                author: '原田ひとみ / 茅野愛衣 / 小倉唯',
+                url: 'https://api.imjad.cn/cloudmusic/?type=song&id=28018274&br=128000&raw=1',
+                pic: 'https://p1.music.126.net/UrbsnGXM8_cc3nLd3Ru3zw==/18541064580889962.jpg'
+            },
+            {
+                title: '恋爱サーキュレーション',
+                author: '花澤香菜',
+                url: 'https://api.imjad.cn/cloudmusic/?type=song&id=579954&br=128000&raw=1',
+                pic: 'https://p1.music.126.net/hWrYLdhzF4waj4WL1dFPmg==/642114790633458.jpg'
+            },
+        ]
+    });  
+    document.querySelector('.aplayer-list').classList.add('aplayer-list-hide'); */
     document.addEventListener('pjax:success',onPageLoad);
     
     document.addEventListener('pjax:success',function(){
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?136ddc5fd444ca501e348fd4f3c3dae8";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+    
         var codeBlocks=document.querySelectorAll('pre code');
         [].forEach.call(codeBlocks, function(e){
         　　hljs.highlightBlock(e);
@@ -14,13 +69,39 @@ document.addEventListener('DOMContentLoaded',function(){
     
 });
 
+document.addEventListener('scroll',checkElementFade);
+setTimeout(function() {document.addEventListener('scroll',checkTopbarShow);}, 1500);
+
+function checkElementFade(){
+    var articleElements=document.querySelectorAll('.article,.page-navigator,.footer');
+    [].forEach.call(articleElements, function(e){
+        if(e.getBoundingClientRect().top < window.innerHeight){
+            e.style.opacity="1";
+            e.classList.add("animated");
+            e.classList.add("fadeInUp");
+        };
+    });
+}
+function checkTopbarShow(e){
+    var navElement = document.querySelector('.nav');
+    if(!navOffsetTop){navOffsetTop=navElement.offsetTop}
+    if (window.scrollY >= navOffsetTop){
+        navElement.classList.add('FloatNav');
+        document.querySelector('.info').style.paddingBottom="51px";
+    }else{
+        navElement.classList.remove('FloatNav');
+        document.querySelector('.info').style.paddingBottom="0";
+    }
+}
 function onPageLoad(){
+    
+    checkElementFade();
     var readMoreLink=document.querySelectorAll('.more a');
     [].forEach.call(readMoreLink, function(e){
     　　e.addEventListener('click',function(e){
     　　    e.preventDefault();
     　　    var stxt=e.srcElement.parentNode.parentNode;
-    　　  e.srcElement.text="少女折寿中...";
+    　　  e.srcElement.text=" 少女折寿中...";
     　　    var req = new XMLHttpRequest();
             req.open('GET',e.srcElement.href + "?ajaxload", true);
             req.send();
@@ -28,6 +109,10 @@ function onPageLoad(){
                 if(req.readyState == 4){
                     if(req.status == 200){
                         stxt.innerHTML=req.responseText;
+                        var codeBlocks=document.querySelectorAll('pre code');
+                        [].forEach.call(codeBlocks, function(e){
+                        　　hljs.highlightBlock(e);
+                        });
                         onPageLoad(); 
                     }else{
                         
@@ -251,3 +336,4 @@ String.prototype.MD5 = function (bit)
         return WordToHex(b)+WordToHex(c);
     }
 }
+

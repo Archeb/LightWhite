@@ -5,7 +5,7 @@
  * 
  * @package LightWhite
  * @author Archeb @ iDea Leaper
- * @version 1.0.0
+ * @version 1.1.0
  * @link https://qwq.moe/
  */
  
@@ -23,10 +23,12 @@ $this -> need('header.php');
                 <div class="day"><?php echo $this->date->format('d'); ?></div>
                 <div class="month"><?php echo substr($this->date->format('F'),0,3); ?></div>
             </div>
+            <?php if (!isset($this->fields->previewImage)): ?>
             <div class="article-mobile-title">
                 <a pjax href="<?php $this->permalink() ?>">
             <?php $this->title(); ?></a>
             </div>
+            <?php endif; ?>
             <div class="font-control" onclick="biggerFont('tr-<?php echo $this->cid ?>')">
                 <span class="mdi mdi-format-annotation-plus"></span>
             </div>
@@ -38,6 +40,21 @@ $this -> need('header.php');
             </div>
         </div>
         <div class="article-main">
+            <?php if (isset($this->fields->previewImage)): ?>
+    		<a pjax href="<?php $this->permalink() ?>">
+    		    <div class="preview-image-container">
+    		        <div class="preview-image" style="background-image:url(<?php $this->fields->previewImage(); ?>)"></div>
+    		        <div class="preview-image-title">
+    		            <div class="preview-image-title-content"><?php $this->title(); ?></div>
+        		        <div class="preview-image-meta">
+                            <span class="mdi mdi-account-edit"></span> <?php $this->author(); ?>
+                            &nbsp;<span class="mdi mdi-tag"></span> <?php echo implode(", ",array_map(function($v){return $v['name'];},$this->categories)) ?>
+                        </div>
+                    </div>
+    		        
+                </div>
+            </a>
+    		<?php else: ?>
             <div class="article-title">
                 <a pjax href="<?php $this->permalink() ?>">
             <?php $this->title(); ?></a>
@@ -46,8 +63,16 @@ $this -> need('header.php');
                     &nbsp;<span class="mdi mdi-tag"></span> <?php echo implode(", ",array_map(function($v){return $v['name'];},$this->categories)) ?>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="article-content" id="tr-<?php echo $this->cid ?>">
-                            <?php $this->content('继续阅读'); ?>
+                            <?php 
+                            $this->content(); 
+                            if(strpos($this->text, '<!--more-->')){
+                                echo "<p class=\"more\"><a href=\"{$this->permalink}\" class=\"mdi\" title=\"{$this->title}\"> 继续阅读</a></p>";
+                            }else{
+                                echo "<p class=\"more\"><a href=\"{$this->permalink}\" class=\"mdi\" title=\"{$this->title}\"> 展开评论</a></p>";
+                            }
+                            ?>
             </div>
             <div class="article-comment">
                 

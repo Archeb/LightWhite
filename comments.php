@@ -98,13 +98,11 @@ echo $commentClass;
     <div class="comment-element" id="<?php $comments->theId(); ?>">
         <div class="comment-container">
             <div class="comment-author-avatar">
-                <a href="<?php echo $comments->url; ?>"><?php $comments->gravatar('55', ''); ?></a>
+                <a target="_blank" href="<?php echo $comments->url; ?>"><?php $comments->gravatar('55', ''); ?></a>
             </div>
             <div class="comment-author-info">
                 <div class="comment-meta">
-                    <span class="comment-author-name"><?php echo $comments->author(); ?></span>
-                    <a class="comment-time" href="<?php $comments->permalink(); ?>"><?php echo $comments->date('Y-m-d H:i'); ?></a>
-                    <a class="comment-reply" onclick="TypechoComment.reply('<?php $comments->theId(); ?>', <?php echo explode("-",$comments->theId)[1]; ?>);"><span class="mdi mdi-reply"></span></a> 
+                    <span class="comment-author-name"><?php echo $comments->author(); ?></span><a class="comment-time" href="<?php $comments->permalink(); ?>"><?php echo $comments->date('Y-m-d H:i'); ?></a><a class="comment-reply" onclick="TypechoComment.reply('<?php $comments->theId(); ?>', <?php echo explode("-",$comments->theId)[1]; ?>);"><span class="mdi mdi-reply"></span></a> 
                 </div>
                 <div class="comment-content">
                     <?php $comments->content(); ?>
@@ -121,6 +119,7 @@ echo $commentClass;
 <?php } ?>
 
 <div id="comments">
+    <h3 id="comments-head"><span class="mdi mdi-comment-multiple-outline"></span> <?php _e('评论'); ?></h3>
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
     
@@ -132,20 +131,18 @@ echo $commentClass;
 
     <?php if($this->allow('comment')): ?>
     <div id="<?php $this->respondId(); ?>" class="respond">
-        
-    	<h3 id="response"><?php _e('添加新评论'); ?></h3>
     	<div class="warning_tip">发送失败 可能是您的发言太频繁或联系方式有误</div>
     	<form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" role="form">
-    	    <div class="comment-info">
+    	    <div class="comment-info mdi">
                 <?php if($this->user->hasLogin()): ?>
         		<p><?php _e('登录身份: '); ?><a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>. <a href="<?php $this->options->logoutUrl(); ?>" title="Logout"><?php _e('退出'); ?> &raquo;</a></p>
         		<input type="hidden" name="author" value="博主(刷新可见)"/>
     			<input type="hidden" name="mail" value="" />
     			<input type="hidden" name="url" value="<?php $this->options->siteUrl(); ?>" />
                 <?php else: ?>
-    			<input type="text" name="author" id="author" class="text" value="<?php $this->remember('author'); ?>" placeholder="<?php _e('称呼'); ?>" required />
-    			<input type="email" name="mail" id="mail" class="text" placeholder="<?php _e('Email'); ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?> />
-    			<input type="url" name="url" id="url" class="text" placeholder="<?php _e('网站'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?> />
+    			<span class="mdi mdi-account"></span><input type="text" name="author" id="author" class="text" value="<?php $this->remember('author'); ?>" placeholder="<?php _e('称呼'); ?>" required />
+    			<span class="mdi mdi-email"></span><input type="email" name="mail" id="mail" class="text" placeholder="<?php _e('Email'); ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?> />
+    			<span class="mdi mdi-home-outline"></span><input type="url" name="url" id="url" class="text" placeholder="<?php _e('网站'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?> />
                 <?php endif; ?>
             </div>
     		<p>
@@ -155,7 +152,7 @@ echo $commentClass;
     		    <input type="hidden" name="_" value="<?php echo $this->security->getToken($this->permalink) ?>" />
     		<p align="right">
     		    <?php $comments->cancelReply(); ?>
-                <a class="submit" id="submit-comment" type="submit" class="submit"><?php _e('提交评论'); ?></a>
+                <a class="submit" id="submit-comment" type="submit" class="submit"><span class="mdi mdi-send"></span> <?php _e('提交评论'); ?></a>
                 
             </p>
             
