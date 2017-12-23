@@ -3,7 +3,7 @@
 </body>
 <div class="article-list footer">
     <div class="info-left">
-        Theme <a href="https://qwq.moe/">LightWhite</a> Made by Archeb With <span class="mdi mdi-heart"></span>
+        Theme <a href="https://github.com/Archeb/LightWhite">LightWhite</a> Made by <a href="https://qwq.moe/">Archeb</a> With <span class="mdi mdi-heart"></span>
         <br>自豪地使用<a href="http://typecho.org/">Typecho</a> 由<a href="https://cloud.anodelic.com/">Anodelic Cloud</a>提供主机服务
     </div>
     <div class="info-right">

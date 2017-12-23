@@ -213,12 +213,7 @@ Pjax.prototype = {
 
       // Scroll page to top on new page load
       if (options.scrollTo !== false) {
-        if (options.scrollTo.length > 1) {
-          window.scrollTo(options.scrollTo[0], options.scrollTo[1])
-        }
-        else {
-          window.scrollTo(0, options.scrollTo)
-        }
+          window.scrollTo({"behavior": "smooth", "top":document.querySelector('.cover').offsetHeight-53})
       }
     }.bind(this))
   }

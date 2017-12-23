@@ -18,7 +18,6 @@
 	<script src="<?php $this->options->themeUrl('js/o.js?v2'); ?>" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 	<link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/vs2015.min.css" rel="stylesheet">
-	<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 	<script>
 	    hljs.initHighlightingOnLoad();
 	    new Pjax({ selectors: [".article-list"] });
@@ -35,7 +34,7 @@
                     <div class="description"><?php $this->options->description(); ?></div>
                 </div>
             </div>
-            <div class="nav">
+            <div class="nav" id="page-start">
                 <div class="nav_left">
                 <a pjax class="item" href="<?php $this->options->siteUrl(); ?>"><span class="mdi mdi-home"></span>&nbsp;主页</a>
                 <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>

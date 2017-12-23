@@ -34,7 +34,7 @@ $this -> need('header.php');
             </div>
         </div>
         <div class="article-main">
-           <?php if (isset($this->fields->previewImage)): ?>
+           <?php if (isset($this->fields->previewImage) && $this->fields->previewImage!==""): ?>
     		<a pjax href="<?php $this->permalink() ?>">
     		    <div class="preview-image-container">
     		        <div class="preview-image" style="background-image:url(<?php $this->fields->previewImage(); ?>)"></div>

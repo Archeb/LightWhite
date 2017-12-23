@@ -40,6 +40,15 @@ body {
   margin: 0;
   background-color: white;
 }
+hr {
+    width: 30%;
+    transition:width ease-in-out 1s,border-color 0.3s;
+    border:0.5px solid #dadada;
+} 
+hr:hover{
+    width:50%;
+    border-color:black;
+}
 .cover {
   width: 100vw;
   min-height: 200px;
@@ -119,7 +128,7 @@ body {
   border-color: black;
   color:black;
   box-shadow: none!important;
-  transition: all 0.5s!important;
+  transition: all 0.5s,color 0.2s!important;
   background-color:white!important;
 }
 .cover .middle .FloatNav .item:active{
@@ -283,10 +292,21 @@ body {
     color: white;
     z-index: 10;
     font-size: 14px;
+    display: flex;
+    align-items: center;
     transform: scale(1);
 }
-.article-list .article .article-main .preview-image-container .preview-image:meta{
-    transform: scale(1);
+.article-list .article .article-main .preview-image-container .preview-image-meta .tag-item{
+    margin: 0 5px;
+    font-size: 13px;
+    padding: 2px 5px;
+    transition:background-color 0.5s;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    border-radius: 1.5px;
+    background-color: rgba(157, 139, 139, 0.4);
+}
+.article-list .article .article-main .preview-image-container .preview-image-meta .tag-item:hover{
+    background-color: rgba(157, 139, 139, 0.7);
 }
 .article-list .article .article-main .article-title {
   font-size: 35px;
@@ -303,6 +323,7 @@ body {
   line-height: 1.9em;
   word-break: break-all;
   font-size: 15px;
+  
 }
 
 .article-list .article .article-main .article-content li {
@@ -390,6 +411,7 @@ body {
 }
 #comments .comment-author span .avatar {
   border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
   margin-bottom: -10px;
 }
 #comments .comment-container {
@@ -404,11 +426,13 @@ body {
   font-size: 12px;
   color: white;
   background-color: black;
+  box-shadow: 0 0 5px rgba(0,0,0,.2);
 }
 #comments .comment-time {
   padding: 4px 8px 5px;
   font-size: 12px;
   border: 1px solid black;
+    box-shadow: 0 0 5px rgba(0,0,0,.15);
 }
 #comments .comment-reply {
   padding: 4px 8px 5px;
@@ -482,7 +506,7 @@ body {
   border-color: black;
 }
 #comments .avatar {
-  border: 1px solid #eaeaea;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   border-radius: 50%;
 }
 #comments .textarea {
@@ -568,6 +592,7 @@ body {
 }
 #cancel-comment-reply-link:before{
     content: '\f5e9    ';
+    font-family:"Material Design Icons","Microsoft YaHei Light";
 }
 .page-navigator {
   display: flex;
@@ -612,11 +637,11 @@ body {
 }
 .page-navigator .prev a {
   font: normal normal normal 24px/1 "Material Design Icons";
-  font-size: 21px;
+  font-size: 19.5px;
 }
 .page-navigator .next a {
   font: normal normal normal 24px/1 "Material Design Icons";
-  font-size: 21px;
+  font-size: 19.5px;
 }
 .friends {
   display: flex;
@@ -638,7 +663,6 @@ body {
 .friends .a-friend .blog-avatar {
   background-color: white;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   width: 50px;
   height: 50px;
 }
@@ -660,8 +684,8 @@ body {
 .aplayer .aplayer-info .aplayer-controller{
     display:none!important;
 }
-code {
-  font-family:  Consolas,"Open Sans", Helvetica, Tahoma, Arial, "Microsoft YaHei Light", STXihei, 华文细黑, SimSun, 宋体, Heiti, 黑体, sans-serif;
+code,code *{
+  font-family:  Consolas, "Microsoft YaHei Light";
   font-size: 14px;
 }
 ::-webkit-scrollbar {
@@ -764,11 +788,15 @@ code {
     padding-right: 0px;
     border-right: none;
   }
-  
+  .cover .middle .nav .item{
+      font-size: 14px;
+    padding: 15px 5px;
+  }
   .article-list .article {
     flex-direction: column;
     align-items: center;
   }
+  
   .article-list .article .tooltip {
     display: flex;
     padding: 0 20px;
@@ -811,9 +839,15 @@ code {
       font-size:25px;
   }
   #comments > .comment-list > li > .comment-children > .comment-list > li {
-    padding: 0;
-    border: none;
-    margin: 0;
+    padding: 15px 15px 0;
+    margin-left:15px;
+  }
+  #comments .comment-content{
+      font-size:13px;
+  }
+  #comments .avatar{
+      height:40px;
+      width:40px;
   }
   .cover-filter {
     height: 260px!important;
@@ -821,4 +855,58 @@ code {
   .cover {
     height: 260px!important;
   }
+}
+table thead{
+    background-color: #e6e6e6;
+    color: black;
+}
+table thead tr th{
+    font-weight: 400;
+}
+table tbody tr td{
+    border-bottom: 1px solid #d4d4d4;
+    transition:background-color 0.5s;
+    padding:5px 10px;
+}
+table tbody tr td:hover{
+    background-color:#fafafa;
+}
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 25%, 0);
+    transform: translate3d(0, 25%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 25%, 0);
+    transform: translate3d(0, 25%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
 }
