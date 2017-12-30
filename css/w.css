@@ -56,7 +56,7 @@ hr:hover{
   box-shadow: 0 0 5px rgba(0,0,0,.2);
   background-size: cover;
   overflow: hidden;
-  background-image: url(https://qwq.moe/usr/themes/LightWhite/img/cover.jpg?v2);
+  background-image: url(https://qwq.moe/usr/themes/LightWhite/img/cover.jpg?v3);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -154,13 +154,55 @@ hr:hover{
   
 }
 .article-list {
+  margin-top:30px;
   padding: 20px calc(25% + 64px);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
-.article-list .singlepage{
+.article-list .archive-title{
+    background-color: #68d268;
+    box-shadow: 0 0 5px rgba(0,0,0,.2); 
+    color: white;
+    padding: 5px 8px;
+    justify-content: center;
+    transition: opacity 0.5s;
+}
+.singlepage{
     margin-bottom:0!important;
+    margin-top:0!important;
+}
+.article-list .shuoshuo .content p{
+    display: inline;
+}
+.article-list .shuoshuo .author-info img{
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    border-radius:50%;
+}
+.article-list .shuoshuo .shuoshuo-meta{
+    border-top:1px solid #eaeaea;
+    text-align:center;
+}
+.article-list .shuoshuo .shuoshuo-meta:before {
+    position: absolute;
+    margin: -13px -73px;
+    transition:color 0.5s;
+    color: #a2a2a2;
+    background-color: white;
+    padding: 0 10px;
+}
+.article-list .shuoshuo .shuoshuo-meta:hover::before {
+    color:black;
+}
+.article-list .shuoshuo-container{
+    padding:20px 10px;
+    display:flex;
+}
+.article-list .shuoshuo .content-container{
+    margin-left:15px;
+}
+.article-list .shuoshuo a{
+    color: #8a2be2;
 }
 .article-list .article {
   margin-bottom: 50px;
@@ -251,6 +293,24 @@ hr:hover{
   background-color: #eaeaea;
   transform: scale(0.95);
 }
+.article-list .article .tooltip .go-tip {
+  display: flex;
+  padding: 8px 25px 8px 10px;
+  flex-direction: column;
+  transition: background-color 0.5s, transform 0.15s;
+  border-right: solid 1px #fafafa;
+  align-items: center;
+}
+.article-list .article .tooltip .go-tip:hover {
+  background-color: #fafafa;
+}
+.article-list .article .tooltip .go-tip .mdi:before {
+  font-size: 24px;
+}
+.article-list .article .tooltip .go-tip6:active {
+  background-color: #eaeaea;
+  transform: scale(0.95);
+}
 .article-list .article .article-main {
   width: calc(100% - 57px);
   padding-left: 10px;
@@ -325,7 +385,27 @@ hr:hover{
   font-size: 15px;
   
 }
-
+.article-list .article .article-main .article-content p.word{
+    display:none;
+}
+.article-list .article .article-main .article-content input.submit{
+    display:none;
+}
+.article-list .article .article-main .article-content p input[name=protectPassword]{
+    width: 100%;
+    width: 100%;
+    resize: none;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: none;
+    -webkit-appearance: none;
+    outline: none;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px 0;
+    background-color: rgba(212, 212, 212, 0.4);
+    color: #6d6d6d;
+}
 .article-list .article .article-main .article-content li {
   list-style:initial;
 }
@@ -366,6 +446,7 @@ hr:hover{
 }
 .footer {
   display: flex;
+  margin-top:0;
   flex-direction: row;
   font-size:14px;
   justify-content: space-between;
@@ -401,6 +482,7 @@ hr:hover{
 #comments {
   margin-top: 30px;
   transition: opacity 0.3s;
+  line-height: 1.4em;
 }
 #comments #comments-head{
     border-bottom: solid 1px #eaeaea;
@@ -546,6 +628,7 @@ hr:hover{
   color: white;
   padding: 5px 8px;
   opacity: 0;
+  box-shadow: 0 0 5px rgba(0,0,0,.2);
   height: 0;
   transition: opacity 0.5s;
   text-align: center;
@@ -558,7 +641,7 @@ hr:hover{
   outline: none;
   border-right: solid 1px #e3e3e3;
   cursor: pointer;
-  box-shadow: 0 0 5px tranparent;
+  box-shadow: 0 0 5px transparent;
   transition:all 0.3s;
 }
 #comments .respond .submit:hover {
@@ -637,11 +720,11 @@ hr:hover{
 }
 .page-navigator .prev a {
   font: normal normal normal 24px/1 "Material Design Icons";
-  font-size: 19.5px;
+  font-size: 21px;
 }
 .page-navigator .next a {
   font: normal normal normal 24px/1 "Material Design Icons";
-  font-size: 19.5px;
+  font-size: 21px;
 }
 .friends {
   display: flex;
@@ -784,6 +867,10 @@ code,code *{
   .article-list {
     padding: 20px 0;
   }
+  .archive-title{
+      margin:0 20px 20px;
+      margin-bottom:20px!important;
+  }
   .cover .middle .info .avatar {
     padding-right: 0px;
     border-right: none;
@@ -854,6 +941,20 @@ code,code *{
   }
   .cover {
     height: 260px!important;
+  }
+  .page-navigator{
+      margin:0 20px;
+  }
+  .footer{
+      flex-direction: column!important;
+  }
+  .info-left{
+      border-left:none!important;
+      text-align: center;
+  }
+  .info-right{
+      border-right:none!important;
+      text-align: center!important;
   }
 }
 table thead{

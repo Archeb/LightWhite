@@ -1,5 +1,4 @@
 var navOffsetTop;
-
 setInterval(function() {
     var date3= new Date((new Date().getTime()) - 1419043380000);
     var days=Math.floor(date3/(24*3600*1000))
@@ -12,8 +11,8 @@ setInterval(function() {
     document.querySelector("#run-time").innerHTML=(days+"天"+hours+"小时"+minutes+"分钟"+seconds+"秒")
 } , 1000);
 
-document.addEventListener('DOMContentLoaded',onPageLoad);
 document.addEventListener('DOMContentLoaded',function(){
+    checkElementFade();
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -22,6 +21,9 @@ document.addEventListener('DOMContentLoaded',function(){
       s.parentNode.insertBefore(hm, s);
     })();
     pjax = new Pjax({ elements:["a[pjax]",".page-navigator a"],selectors: [".article-list"],scrollTo:true});
+    initProtectArticle();
+    initReadMore();
+    initComment();
     /* var ap = new APlayer({
     element: document.getElementById('aplayer'),
     narrow: false,
@@ -48,9 +50,18 @@ document.addEventListener('DOMContentLoaded',function(){
         ]
     });  
     document.querySelector('.aplayer-list').classList.add('aplayer-list-hide'); */
-    document.addEventListener('pjax:success',onPageLoad);
     
     document.addEventListener('pjax:success',function(){
+        checkElementFade();
+        initProtectArticle();
+        initComment();
+        initReadMore();
+        var codeBlocks=document.querySelectorAll('pre code');
+        [].forEach.call(codeBlocks, function(e){
+        　　hljs.highlightBlock(e);
+        });
+    });
+    
         var _hmt = _hmt || [];
         (function() {
           var hm = document.createElement("script");
@@ -64,70 +75,18 @@ document.addEventListener('DOMContentLoaded',function(){
         　　hljs.highlightBlock(e);
         });
         
-            
-    });
-    
 });
 
 document.addEventListener('scroll',checkElementFade);
 setTimeout(function() {document.addEventListener('scroll',checkTopbarShow);}, 1500);
-
-function checkElementFade(){
-    var articleElements=document.querySelectorAll('.article,.page-navigator,.footer');
-    [].forEach.call(articleElements, function(e){
-        if(e.getBoundingClientRect().top < window.innerHeight){
-            e.style.opacity="1";
-            e.classList.add("animated");
-            e.classList.add("fadeInUp");
-        };
-    });
-}
-function checkTopbarShow(e){
-    var navElement = document.querySelector('.nav');
-    if(!navOffsetTop){navOffsetTop=navElement.offsetTop}
-    if (window.scrollY >= navOffsetTop){
-        navElement.classList.add('FloatNav');
-        document.querySelector('.info').style.paddingBottom="51px";
-    }else{
-        navElement.classList.remove('FloatNav');
-        document.querySelector('.info').style.paddingBottom="0";
-    }
-}
-function onPageLoad(){
-    
-    checkElementFade();
-    var readMoreLink=document.querySelectorAll('.more a');
-    [].forEach.call(readMoreLink, function(e){
-    　　e.addEventListener('click',function(e){
-    　　    e.preventDefault();
-    　　    var stxt=e.srcElement.parentNode.parentNode;
-    　　  e.srcElement.text=" 少女折寿中...";
-    　　    var req = new XMLHttpRequest();
-            req.open('GET',e.srcElement.href + "?ajaxload", true);
-            req.send();
-            req.onreadystatechange = function(){
-                if(req.readyState == 4){
-                    if(req.status == 200){
-                        stxt.innerHTML=req.responseText;
-                        loadCommentReply(stxt.querySelector('.respond'));
-                        var codeBlocks=document.querySelectorAll('pre code');
-                        [].forEach.call(codeBlocks, function(e){
-                        　　hljs.highlightBlock(e);
-                        });
-                        onPageLoad(); 
-                    }else{
-                        
-                    }
-                }
-            }
-    　　})
-    });
+function initComment(){
     var sendCommentElement=document.querySelector('#submit-comment');
     if(sendCommentElement){
-        sendCommentElement.addEventListener('click',function(){
+        sendCommentElement.addEventListener('click',function(e){
             //主题支持到IE11 所以没用fetch
             document.querySelector('.warning_tip').style.height="0";
             document.querySelector('.warning_tip').style.opacity="0";
+            e.target.innerHTML="<span class=\"mdi mdi-cube-send\"></span>&nbsp提交中";
             var form = document.querySelector('form');
             var data = new FormData(form);
             var req = new XMLHttpRequest();
@@ -141,11 +100,13 @@ function onPageLoad(){
                             document.querySelector('.warning_tip').style.opacity="1";
                             document.querySelector('.warning_tip').style.backgroundColor="#bb0909";
                             document.querySelector('.warning_tip').innerHTML="发送失败 可能是您的发言太频繁或联系方式有误";
+                            document.querySelector('.submit').innerHTML="<span class=\"mdi mdi-send\"></span>&nbsp;提交评论";
                         }else{
                             document.querySelector('.warning_tip').style.height="auto";
                             document.querySelector('.warning_tip').style.opacity="1";
                             document.querySelector('.warning_tip').style.backgroundColor="green";
                             document.querySelector('.warning_tip').innerHTML="发送成功";
+                            document.querySelector('.submit').innerHTML="<span class=\"mdi mdi-send\"></span>&nbsp;提交评论";
                             var e = document.createElement('li');
                             e.innerHTML = '<div class="comment-element" id="comment-TMP"><div class="comment-container"><div class="comment-author-avatar"><a href="' + data.get('url') + '"><img class="avatar" src="https://gravatar.cat.net/avatar/' + data.get('mail').MD5(32) + '?s=55&amp;r=G&amp;d=" alt="' + data.get('author') + '" width="55" height="55"></a></div><div class="comment-author-info"><div class="comment-meta"><span class="comment-author-name"><a href="' + data.get('url') + '" rel="external nofollow">' + data.get('author') + '</a></span><a class="comment-time" href="#">' + new Date().toLocaleDateString() + '</a></div><div class="comment-content"><p>' + data.get('text') + '</p></div></div></div></div>';
                             e.className="comment-body comment-parent comment-odd";
@@ -159,15 +120,129 @@ function onPageLoad(){
         });
     }
 }
-
+function initReadMore(){
+    var readMoreLink=document.querySelectorAll('.more a');
+        [].forEach.call(readMoreLink, function(e){
+        e.addEventListener('click',function(e){
+        e.preventDefault();
+        var stxt=e.target.parentNode.parentNode;
+        e.target.text=" 少女折寿中...";
+        if(e.target.protectedArticle==true){
+            var form = e.target.parentNode.parentNode.querySelector('form.protected');
+            var data = new FormData(form);
+            var req = new XMLHttpRequest();
+            req.open('POST', form.action, true);
+            req.send(data);
+            req.onreadystatechange = function(){
+                if(req.readyState == 4 && req.status == 200){
+                    if(req.responseText.indexOf("错误")==-1){
+                        loadMoreArticle(stxt,e);
+                    }else{
+                        alert('密码错误！');
+                        e.target.text=" 解锁文章";
+                        return;
+                    }
+                }
+            }
+        }else{
+            loadMoreArticle(stxt,e);
+        }
+            
+    　　})
+    });
+}
+function loadMoreArticle(stxt,e){
+    var req = new XMLHttpRequest();
+                        req.open('GET',e.target.href + "?ajaxload", true);
+                        req.send();
+                        req.onreadystatechange = function(){
+                            if(req.readyState == 4){
+                                if(req.status == 200){
+                                    stxt.innerHTML=req.responseText;
+                                    loadCommentReply(stxt.querySelector('.respond'));
+                                    var codeBlocks=stxt.querySelectorAll('pre code');
+                                    [].forEach.call(codeBlocks, function(e){
+                                    　　hljs.highlightBlock(e);
+                                    });
+                                    var sendCommentElement=stxt.querySelector('#submit-comment');
+                                    if(sendCommentElement){
+                                        sendCommentElement.addEventListener('click',function(e){
+                                            //主题支持到IE11 所以没用fetch
+                                            stxt.querySelector('.warning_tip').style.height="0";
+                                            stxt.querySelector('.warning_tip').style.opacity="0";
+                                            stxt.querySelector('.submit').innerHTML="<span class=\"mdi mdi-cube-send\"></span>&nbsp提交中";
+                                            var form = stxt.querySelector('form');
+                                            var data = new FormData(form);
+                                            var req = new XMLHttpRequest();
+                                            req.open('POST', form.action, true);
+                                            req.send(data);
+                                            req.onreadystatechange = function(){
+                                                if(req.readyState == 4){
+                                                    if(req.status == 200){
+                                                        if(req.responseText.indexOf("Error")!=-1){
+                                                            stxt.querySelector('.warning_tip').style.height="auto";
+                                                            stxt.querySelector('.warning_tip').style.opacity="1";
+                                                            stxt.querySelector('.warning_tip').style.backgroundColor="#bb0909";
+                                                            stxt.querySelector('.warning_tip').innerHTML="发送失败 可能是您的发言太频繁或联系方式有误";
+                                                            stxt.querySelector('.submit').innerHTML="<span class=\"mdi mdi-send\"></span>&nbsp;提交评论";
+                                                        }else{
+                                                            stxt.querySelector('.warning_tip').style.height="auto";
+                                                            stxt.querySelector('.warning_tip').style.opacity="1";
+                                                            stxt.querySelector('.warning_tip').style.backgroundColor="green";
+                                                            stxt.querySelector('.warning_tip').innerHTML="发送成功";
+                                                            stxt.querySelector('.submit').innerHTML="<span class=\"mdi mdi-send\"></span>&nbsp;提交评论";
+                                                            var e = stxt.createElement('li');
+                                                            e.innerHTML = '<div class="comment-element" id="comment-TMP"><div class="comment-container"><div class="comment-author-avatar"><a href="' + data.get('url') + '"><img class="avatar" src="https://gravatar.cat.net/avatar/' + data.get('mail').MD5(32) + '?s=55&amp;r=G&amp;d=" alt="' + data.get('author') + '" width="55" height="55"></a></div><div class="comment-author-info"><div class="comment-meta"><span class="comment-author-name"><a href="' + data.get('url') + '" rel="external nofollow">' + data.get('author') + '</a></span><a class="comment-time" href="#">' + new Date().toLocaleDateString() + '</a></div><div class="comment-content"><p>' + data.get('text') + '</p></div></div></div></div>';
+                                                            e.className="comment-body comment-parent comment-odd";
+                                                            stxt.querySelector('.comment-list').append(e);
+                                                        }
+                                                    }else{
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                }else{
+                                }
+                            }
+                        }
+}
+function checkElementFade(){
+    var articleElements=document.querySelectorAll('.article,.page-navigator,.footer,.shuoshuo');
+    [].forEach.call(articleElements, function(e){
+        if(e.getBoundingClientRect().top < window.innerHeight){
+            e.style.opacity="1";
+            e.classList.add("animated");
+            e.classList.add("fadeInUp");
+        };
+    });
+}
+function checkTopbarShow(e){
+    var navElement = document.querySelector('.nav');
+    
+    if(!navOffsetTop){navOffsetTop=navElement.offsetParent.offsetTop+navElement.offsetTop}
+    if (window.scrollY >= navOffsetTop){
+        navElement.classList.add('FloatNav');
+        document.querySelector('.middle').className="middle";
+        document.querySelector('.info').style.paddingBottom="51px";
+    }else{
+        navElement.classList.remove('FloatNav');
+        document.querySelector('.info').style.paddingBottom="0";
+    }
+}
 function biggerFont(targetid){
     var target=document.querySelector('#' + targetid);
     target.style.fontSize= (target.style.fontSize=='') ? '15px' : target.style.fontSize;
     target.style.fontSize=(parseInt(target.style.fontSize)+1) + "px"; 
 }
 
-function loadArticle(){
-    
+function initProtectArticle(){
+    var protectedArticles=document.querySelectorAll('form.protected');
+    [].forEach.call(protectedArticles, function(e){
+    　　e.querySelector('input[name=protectPassword]').placeholder="输入密码以解锁...";
+    　　e.parentNode.querySelector('.more>a').innerHTML=" 解锁文章";
+    　　e.parentNode.querySelector('.more>a').protectedArticle=true;
+    });
 }
 
 String.prototype.MD5 = function (bit)

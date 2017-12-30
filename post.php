@@ -3,6 +3,16 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 	exit ;
 
 if (isset($_GET['ajaxload'])){
+    ?>
+    <title>
+    <?php $this->archiveTitle(array(
+            'category'  =>  _t('分类 %s 下的文章'),
+            'search'    =>  _t('包含关键字 %s 的文章'),
+            'tag'       =>  _t('标签 %s 下的文章'),
+            'author'    =>  _t('%s 发布的文章')
+        ), '', ' - '); ?><?php $this->options->title(); ?>
+    </title>
+    <?php
     $this->content('继续阅读');
     $this->need('comments.php');
     die();
@@ -34,7 +44,7 @@ $this -> need('header.php');
             </div>
         </div>
         <div class="article-main">
-           <?php if (isset($this->fields->previewImage) && $this->fields->previewImage!==""): ?>
+           <?php if ($this->fields->previewImage && $this->fields->previewImage!==""): ?>
     		<a pjax href="<?php $this->permalink() ?>">
     		    <div class="preview-image-container">
     		        <div class="preview-image" style="background-image:url(<?php $this->fields->previewImage(); ?>)"></div>

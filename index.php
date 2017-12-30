@@ -16,14 +16,40 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 $this -> need('header.php');
 ?>
 <div class="article-list">
-    <?php while($this->next()): ?>
+    <?php while($this->next()): 
+    global $isShuoshuo;
+    $isShuoshuo=false;
+    array_map(function($v){global $isShuoshuo;if($v['name']=="说说"){$isShuoshuo=true;};},$this->categories);
+    if($isShuoshuo===true){ ?>
+    <div class="shuoshuo">
+        <div class="shuoshuo-meta">
+        <style>
+        .shuoshuo-meta:before {
+            content: '<?php $this->date('F jS , Y'); ?>';
+        }
+        </style>
+            
+        </div>
+        <div class="shuoshuo-container">
+            <div class="author-info">
+                <?php $this->author->gravatar(50); ?>
+            </div>
+            <div class="content-container">
+                <div class="content">
+                    <a pjax href="<?php $this->author->permalink(); ?>">@<?php $this->author(); ?></a>：<?php echo $this->excerpt; ?>
+                </div>
+                <div class="comments"></div>
+            </div>
+        </div>
+    </div>
+    <?php }else{ ?>
     <div class="article">
         <div class="tooltip">
             <div class="date">
                 <div class="day"><?php echo $this->date->format('d'); ?></div>
                 <div class="month"><?php echo substr($this->date->format('F'),0,3); ?></div>
             </div>
-            <?php if (isset($this->fields->previewImage) && $this->fields->previewImage!==""): ?>
+            <?php if (!$this->fields->previewImage): ?>
             <div class="article-mobile-title">
                 <a pjax href="<?php $this->permalink() ?>">
             <?php $this->title(); ?></a>
@@ -38,9 +64,13 @@ $this -> need('header.php');
             <div class="go-share">
                 <span class="mdi mdi-share-variant"></span>
             </div>
+            <div class="go-tip">
+                <span class="mdi mdi-coin"></span>
+            </div>
         </div>
         <div class="article-main">
-            <?php if (isset($this->fields->previewImage) && $this->fields->previewImage!==""): ?>
+            <?php if ($this->fields->previewImage && $this->fields->previewImage!==""): ?>
+            
     		<a pjax href="<?php $this->permalink() ?>">
     		    <div class="preview-image-container">
     		        <div class="preview-image" style="background-image:url(<?php $this->fields->previewImage(); ?>)"></div>
@@ -79,7 +109,7 @@ $this -> need('header.php');
             </div>
         </div>
     </div>
-    <?php endwhile; ?>
+    <?php } endwhile; ?>
     <?php $this->pageNav('', ''); ?>
 </div>
 	<?php $this -> need('footer.php'); ?>

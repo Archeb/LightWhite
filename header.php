@@ -40,7 +40,7 @@
                 <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
                 <?php while($pages->next()): ?>
                 <div class="dot">&nbsp;·&nbsp;</div><a pjax class="item" href="<?php $pages->permalink(); ?>">
-                    <?php if(isset($pages->fields->icon)){ ?><span class="mdi <?php $pages->fields->icon() ?>"></span>&nbsp;<?php } ?><?php $pages->title(); ?></a>
+                    <?php if($pages->fields->icon && $pages->fields->icon!==""){ ?><span class="mdi <?php $pages->fields->icon() ?>"></span>&nbsp;<?php } ?><?php $pages->title(); ?></a>
                 <?php endwhile; ?>
                 </div>
                 <div class="nav_right">

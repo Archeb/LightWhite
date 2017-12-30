@@ -5,7 +5,7 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 
 $this -> need('header.php');
 ?>
-<div class="article-list">
+<div class="article-list singlepage">
     <?php while($this->next()): ?>
     <div class="article singlepage">
         <div class="tooltip">
@@ -29,7 +29,8 @@ $this -> need('header.php');
             </div>
         </div>
         <div class="article-main">
-            <?php if (isset($this->fields->previewImage) && $this->fields->previewImage!==""): ?>
+            <?php if ($this->fields->previewImage && $this->fields->previewImage!==""): ?>
+           
     		<a pjax href="<?php $this->permalink() ?>">
     		    <div class="preview-image-container">
     		        <div class="preview-image" style="background-image:url(<?php $this->fields->previewImage(); ?>)"></div>
