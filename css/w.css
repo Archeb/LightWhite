@@ -160,6 +160,10 @@ hr:hover{
   display: flex;
   flex-direction: column;
 }
+.article-list .border-top{
+    border-top:1px solid #eaeaea;
+    padding-top:20px;
+}
 .article-list .archive-title{
     background-color: #68d268;
     box-shadow: 0 0 5px rgba(0,0,0,.2); 
@@ -195,7 +199,7 @@ hr:hover{
     color:black;
 }
 .article-list .shuoshuo-container{
-    padding:20px 10px;
+    padding:20px 10px 15px;
     display:flex;
 }
 .article-list .shuoshuo .content-container{

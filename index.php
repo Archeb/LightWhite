@@ -16,15 +16,19 @@ if (!defined('__TYPECHO_ROOT_DIR__'))
 $this -> need('header.php');
 ?>
 <div class="article-list">
-    <?php while($this->next()): 
+    <?php 
+    $LastIsShuoshuo=false;
+    while($this->next()): 
     global $isShuoshuo;
     $isShuoshuo=false;
     array_map(function($v){global $isShuoshuo;if($v['name']=="说说"){$isShuoshuo=true;};},$this->categories);
-    if($isShuoshuo===true){ ?>
+    if($isShuoshuo===true){ 
+    $LastIsShuoshuo=true;
+    ?>
     <div class="shuoshuo">
-        <div class="shuoshuo-meta">
+        <div class="shuoshuo-meta shuoshuo-meta-<?php echo $this->cid ?>">
         <style>
-        .shuoshuo-meta:before {
+        .shuoshuo-meta-<?php echo $this->cid ?>:before {
             content: '<?php $this->date('F jS , Y'); ?>';
         }
         </style>
@@ -43,7 +47,7 @@ $this -> need('header.php');
         </div>
     </div>
     <?php }else{ ?>
-    <div class="article">
+    <div class="article <?php if($LastIsShuoshuo===true){ echo "border-top" ; $LastIsShuoshuo=false;} ?>">
         <div class="tooltip">
             <div class="date">
                 <div class="day"><?php echo $this->date->format('d'); ?></div>
